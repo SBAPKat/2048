@@ -88,10 +88,10 @@ def vic_def(mouvement):
         for y in range(5):
             if tab[x][y] != 0:
                 number_cases = number_cases + 1
-	    if tab[x][y] == 2048: #si un 2048 est présent victoire
-		return 1 #on retourne donc 1
+            if tab[x][y] == 2048: #si un 2048 est présent victoire
+                return 1 #on retourne donc 1
     if number_cases == 25 and mouvement == 0: #si aucun mouvement n'a été effectué et que le tableau est plein
-	return 2 #on renvoie 2
+        return 2 #on renvoie 2
     return 0 #sinon 0
 
 def random_case():
