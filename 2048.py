@@ -22,7 +22,7 @@ def exceptonormal():
 def move(deway):
     """fonction qui gere le deplacement, deway est la variable contenant le sens voulu, les variables i et k sont respectivement les lignes
     et les colones du tableau, afin de verifier si l'on a perdu, on renvoie la variable mouvement qui indique s'il y a au moins une case à bouger"""
-    mouvement = 0 # on initialise la variable qui informe si une case � bouger
+    mouvement = 0 # on initialise la variable qui informe si une case à bouger
     if deway == "down" or deway =="right":
         borneinf = 3 # valeur utilisée dans les boucles for qui suivent
         bornesup = -1 # elle varie en fonction de la manière dont on veut parcourir
@@ -36,8 +36,8 @@ def move(deway):
         pas = 1
         sens = -1
     if deway == "down" or deway == "up":
-        for passage in range(4): #tableau de 5*5 donc 5 passage
-            for i in range(borneinf,bornesup,pas): # minimum, maximum, pas
+        for passage in range(4): #Pour q'une case parcourt tout le tableau, elle doit se déplacer de 4 cases 
+            for i in range(borneinf,bornesup,pas): # minimum, maximum, pas, on lit le  tableau  ligne par ligne
                 for k in range(5):
                     if tab[i + sens][k] == tab[i][k] and tab[i][k] not in exceptions and tab[i][k] != 0:
                         tab[i + sens][k] = 2 * tab[i][k] + 1
@@ -53,7 +53,7 @@ def move(deway):
         return mouvement
     else:
         for passage in range(4):
-            for k in range(borneinf,bornesup,pas):
+            for k in range(borneinf,bornesup,pas): # on lit le tableu colones par colones
                 for i in range(5):
                     if tab[i][k + sens] == tab[i][k] and tab[i][k] not in exceptions and tab[i][k] != 0:
                         tab[i][k + sens] = 2 * tab[i][k] + 1  # on fait fois deux pour combiner les cases
@@ -125,7 +125,6 @@ def affichage(score):
                 key = "case" + str(tab[x][y])  # "Crée le nom de l'objet à afficher
                 fenetre.blit(image_dict.get(key), dispcoord)  # Affiche l'objet
     print(score)
-    font = pygame.font.Font('comic.ttf', 40) #on définit la police et la taille
     text_score = font.render(str(score), True, (0, 0, 0))
     fenetre.blit(text_score, (762, 77)) #on affiche le score
     pygame.display.flip()  # Rafraichit l'écran
@@ -143,10 +142,11 @@ try:
     ResX = 1280  # Résolution écran horizontale
     ResY = 720  # Résolution écran verticale
     pygame.font.init()
+    font = pygame.font.Font('comic.ttf', 40) #on définit la police et la taille
     score = 0 #on initialise le score
-    controle = 0 # Controle sert à determiner si la touche pressée est utilisée dans les controles
     exceptions = [1, 3, 5, 9, 17, 33, 65, 129, 257, 513, 1025, 2049]
     # liste qui contient les exceptions pour les mouvements
+    #elle est utilisée dans la fonction move
     cons = [0] * 5  # Création du tableau contenant les cases
     tab = [0] * 5
     for i in range(5):
@@ -166,25 +166,20 @@ try:
                 continuer = 0
             elif event.type == KEYDOWN:
                 if event.key == K_DOWN:
-                   mouvement = move("down") #on demande de tenter de déplacer les cases vers le bas, si au moins une case bouge mouvement = 1
-                   controle = 1 # la touche est reconnue par le programme
+                   mouvement = move("down") #on demande de tenter de déplacer les cases vers le bas, si au moins une case bouge mouvemenment =1
                 elif event.key == K_UP:
                    mouvement = move("up")
-                   controle = 1
                 elif event.key == K_LEFT:
                    mouvement = move("left")
-                   controle = 1
                 elif event.key == K_RIGHT:
                    mouvement = move("right")
-                   controle = 1
                 elif event.key == K_RETURN and victoireoudefaite == 2: # en cas de défaite et d'appuie sur entrer
                    for i in range(5): #on réinitialise le tableau
                        tab[i] = list(cons)
-                else:
-                    controle = 0 # la touche n'est pas reconnue par le programme donc controle = 0
-            if event.type == KEYUP:
-                if event.key == K_LEFT or K_RIGHT or K_UP or K_DOWN:
+            elif event.type == KEYUP:
+                if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN:
                     victoireoudefaite = vic_def(mouvement) # on vérifie la victoire ou défaite
+                    print ("wut")
                     if victoireoudefaite == 1: # si victoire
                         print("c'est gagné")
                         score = random_case(score) #crée une case aléatoire
@@ -193,7 +188,7 @@ try:
                         print("c'est perdu")
                         fenetre.blit(image_dict.get("defaite"), (0,0)) # Affiche le menu de défaite
                         pygame.display.flip()
-                    elif victoireoudefaite == 0 and controle == 1: #si ni victoire ou défaite et touche reconnue
+                    elif victoireoudefaite == 0: #si ni victoire ou défaite et touche reconnue
                         score = random_case(score) #crée une case aléatoire
                         affichage(score)
 
