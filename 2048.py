@@ -20,9 +20,9 @@ def exceptonormal():
 
 
 def move(deway):
-    """fonction qui gere le deplacement, deway est la varibel contenant le sens voulu, les variable i et k sont respectivement les lignes
-    et les colones du tableau, afin de verifier si l'on a perdu, on renvoie la varible mouvement qui indique si il a au moins une case a bougée"""
-    mouvement = 0 # on initialise la variable qui informe si une case a bougée
+    """fonction qui gere le deplacement, deway est la variable contenant le sens voulu, les variables i et k sont respectivement les lignes
+    et les colones du tableau, afin de verifier si l'on a perdu, on renvoie la variable mouvement qui indique s'il y a au moins une case à bouger"""
+    mouvement = 0 # on initialise la variable qui informe si une case � bouger
     if deway == "down" or deway =="right":
         borneinf = 3 # valeur utilisée dans les boucles for qui suivent
         bornesup = -1 # elle varie en fonction de la manière dont on veut parcourir
@@ -42,7 +42,7 @@ def move(deway):
                     if tab[i + sens][k] == tab[i][k] and tab[i][k] not in exceptions and tab[i][k] != 0:
                         tab[i + sens][k] = 2 * tab[i][k] + 1
                         # on fait fois deux pour combiner les cases, puis on rajoute 1 afin de ne pas
-                        # fusionne deux fois une case lors d'un passage
+                        # fusionner deux fois une case lors d'un passage
                         tab[i][k] = 0
                         mouvement = 1 #un mouvement a été effectué, mouvement est donc vrai
                     if tab[i + sens][k] == 0 and tab[i][k] !=0:
@@ -71,7 +71,7 @@ def images_load():
     image_dict_temp = {}  # Dictionnaire vide qui contiendra les images
     for filename in os.listdir("pictures"):  # Parcours tous les fichiers du dossier "pictures"
         if filename.endswith(".png"):  # si le fichier est un .png, entre dans la boucle
-            path = os.path.join("pictures", filename) # Récupère le chemain d'accès au fichier et le stocke dans path
+            path = os.path.join("pictures", filename) # Récupère le chemin d'accès au fichier et le stocke dans path
             key = filename[:-4]  # Crée une clé pour accéder à l'élément dans le dictionnaire en prenant le nom du
             # fichier et en enlevant l'extension (-4 caractères)
             image_dict_temp[key] = pygame.image.load(path).convert_alpha() # on stocke l'image donnée dans le dictionnaire
@@ -82,7 +82,7 @@ def vic_def(mouvement):
     si aucun mouvement à été effectué et que le tableau est plein dans ce cas c'est la défaite
     si lorsque qu'on compte les cases du tableau on détecte un 2048, c'est la victoire. """
     number_cases = 0 #on initialise la variable qui compte les cases pleines
-    for x in range(5): #on parcours le tableau afin de compter le nombre de cases
+    for x in range(5): #on parcourt le tableau afin de compter le nombre de cases
         for y in range(5):
             if tab[x][y] != 0:
                 number_cases = number_cases + 1
@@ -115,15 +115,15 @@ def random_case(score):
 
 
 def affichage(score):
-    """Fonction qui lis le tableau(tab) ,afin d'associer à chaque nombre son image
-    correspondante et l'affiche, de plus elle gère le score"""
+    """Fonction qui lit le tableau(tab) ,afin d'associer à chaque nombre son image
+    correspondante et l'affiche, de plus elle gere le score"""
     fenetre.blit(image_dict.get("interface"), (0, 0))  # Affiche la grille de jeu
-    for x in range(0, 5):  # boucle qui parcours le tableau
+    for x in range(0, 5):  # boucle qui parcourt le tableau
         for y in range(0, 5):
             if tab[x][y] != 0:
                 dispcoord = coords(x, y)  # Stocke dans la variable dispcoord l'equivalent en coordonnées dans le plan à partir des coordonnées dans le tableau
-                key = "case" + str(tab[x][y])  # "Créée" le nom de l'objet à afficher
-                fenetre.blit(image_dict.get(key), dispcoord)  # Affiche l'objet (év
+                key = "case" + str(tab[x][y])  # "Crée le nom de l'objet à afficher
+                fenetre.blit(image_dict.get(key), dispcoord)  # Affiche l'objet
     print(score)
     font = pygame.font.Font('comic.ttf', 40) #on définit la police et la taille
     text_score = font.render(str(score), True, (0, 0, 0))
@@ -140,8 +140,8 @@ def coords(y, x):
 
 
 try:
-    ResX = 1280  # Resolution écran horizontale
-    ResY = 720  # Resolution écran verticale
+    ResX = 1280  # Résolution écran horizontale
+    ResY = 720  # Résolution écran verticale
     pygame.font.init()
     score = 0 #on initialise le score
     controle = 0 # Controle sert à determiner si la touche pressée est utilisée dans les controles
