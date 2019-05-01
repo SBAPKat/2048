@@ -14,7 +14,7 @@ def exceptonormal():
     une fois toutes les cases déplacées"""
     for i in range(5):
         for k in range(5):
-            if tab[i][k] in exceptions: # on vérifie si la case parcourut contient un nombre impair
+            if tab[i][k] in exceptions: # on vérifie si la case parcourue contient un nombre impair
                 tab[i][k] = tab[i][k] - 1 #si oui on retire 1
     return
 
@@ -22,7 +22,7 @@ def exceptonormal():
 def move(deway):
     """fonction qui gere le deplacement, deway est la variable contenant le sens voulu, les variables i et k sont respectivement les lignes
     et les colones du tableau, afin de verifier si l'on a perdu, on renvoie la variable mouvement qui indique s'il y a au moins une case à bouger"""
-    mouvement = 0 # on initialise la variable qui informe si une case a bougée
+    mouvement = 0 # on initialise la variable qui informe si une case a bougé
     if deway == "down" or deway =="right":
         borneinf = 3 # valeur utilisée dans les boucles for qui suivent
         bornesup = -1 # elle varie en fonction de la manière dont on veut parcourir
@@ -39,7 +39,7 @@ def move(deway):
         for passage in range(4): # Pour qu'une case parcourt tout le tableau, elle doit se déplacer de 4 cases 
             for i in range(borneinf,bornesup,pas): # minimum, maximum, pas, on lit le  tableau  ligne par ligne
                 for k in range(5):
-                    if tab[i + sens][k] == tab[i][k] and tab[i][k] not in exceptions and tab[i][k] != 0: # si la case adjacent est la case a déplacée sont identique
+                    if tab[i + sens][k] == tab[i][k] and tab[i][k] not in exceptions and tab[i][k] != 0: # si la case adjacente est la case à déplacer sont identiques
                         # et qu'elles n'ont pas deja été fusionées (non impair) 
                         tab[i + sens][k] = 2 * tab[i][k] + 1 
                         # on fait fois deux pour combiner les cases, puis on rajoute 1 afin de ne pas
@@ -50,7 +50,7 @@ def move(deway):
                         tab[i + sens][k] = tab[i][k]
                         tab[i][k] = 0
                         mouvement = 1
-        exceptonormal()  #on retire les 1 ajoutés précedemment
+        exceptonormal()  # on retire les 1 ajoutés précedemment
         return mouvement
     else:
         for passage in range(4):
@@ -167,7 +167,7 @@ try:
                 continuer = 0
             elif event.type == KEYDOWN:
                 if event.key == K_DOWN:
-                   mouvement = move("down") #on demande de tenter de déplacer les cases vers le bas, si au moins une case bouge mouvement =1
+                   mouvement = move("down") # on demande de tenter de déplacer les cases vers le bas, si au moins une case bouge mouvement =1
                 elif event.key == K_UP:
                    mouvement = move("up")
                 elif event.key == K_LEFT:
@@ -183,13 +183,13 @@ try:
                     victoireoudefaite = vic_def(mouvement) # on vérifie la victoire ou défaite
                     if victoireoudefaite == 1: # si victoire
                         print("c'est gagné")
-                        score = random_case(score) # crée une case aléatoire
+                        score = random_case(score) # créée une case aléatoire
                         affichage(score)
                     elif victoireoudefaite == 2: # si défaite
                         print("c'est perdu")
                         fenetre.blit(image_dict.get("defaite"), (0,0)) # Affiche le menu de défaite
                         pygame.display.flip()
-                    elif victoireoudefaite == 0: #si ni victoire ou défaite
+                    elif victoireoudefaite == 0: # si ni victoire ou défaite
                         score = random_case(score) # crée une case aléatoire
                         affichage(score)
 
