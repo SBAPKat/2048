@@ -1,12 +1,15 @@
-read -p "Enter name of file to upload (with extention), if you want to do a global upload, type * :" name
-if [ "$name" = "*" ]
+read -p "Type B to create a new branch (in case of uploading error, or in case of multiple people working at the same time) or type R for a regular upload:" regular
+if [ "$regular" = "B" ]
 then
-    echo "uploading everything"
-    git add *
+    echo "selecting Branch Upload"
+    read -p "Type name of branch (please use date, or something explicit):" branch_name
+    git checkout -b $branch_name
 else
-    echo "$name is getting uploaded"
-    git add $name
+    echo "selecting upload to main branch"
+    branch_name="master"
 fi
+echo "uploading"
+git add *
 read -p "Enter Changelog: " changes
 git commit -m " $changes "
-git push origin master
+git push origin $branch_name
