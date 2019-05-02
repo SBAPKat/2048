@@ -90,10 +90,11 @@ def defaite(mouvement):
     else:
             return 0 # sinon 0
 
-def random_case(score):
+def random_case():
     """Place une case (2 ou 4 au hasard avec 2 ayant une probabilité de 0.75 et 4 de 0.25) dans TAB à une position aléatoire"""
     number = randr(0, 4)  # Choisit un nombre au hasard afin de déterminer si un 2 ou un 4 apparait
     global number_case
+    global score
     number_x, number_y = randr(0, 5), randr(0, 5)  # Choisit les coordonnées dans le tableau au hasard
     if tab[number_x][number_y] == 0:  # Vérifie si la case est vide
         if number == 0:  # if et else servent ici à déterminer 2 ou 4 à partir de la valeur aléatoire
@@ -105,15 +106,16 @@ def random_case(score):
             score = score + 2
             number_case += 1
     else:
-        score = random_case(score)
-        return score
+        random_case()
+        return
     tab[number_x][number_y] = number  # Entre la valeur déterminée au hasard dans une case vide
-    return score # Condition pour continuer = Ne pas perdre
+    return  # Condition pour continuer = Ne pas perdre
 
 
-def affichage(score):
+def affichage():
     """Fonction qui lit le tableau(tab) ,afin d'associer à chaque nombre son image
     correspondante et l'affiche, de plus elle gere le score et vérifie la victoire"""
+    global score
     fenetre.blit(image_dict.get("interface"), (0, 0))  # Affiche la grille de jeu
     victoire = 0
     for x in range(0, 5):  # boucle qui parcourt le tableau
@@ -158,7 +160,7 @@ try:
     pygame.key.set_repeat(400, 30)
     image_dict = images_load()  # Fonction qui charge toutes les images
     # elle est utilisée dans la fonction random_case
-    varvic = affichage(score)
+    varvic = affichage()
     while continuer: # boucle while principale
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -185,8 +187,8 @@ try:
                         fenetre.blit(image_dict.get("defaite"), (0,0)) # Affiche le menu de défaite
                         pygame.display.flip()
                     elif vardefaite == 0: # sinon
-                        score = random_case(score) # crée une case aléatoire
-                        varvic = affichage(score)
+                        random_case() # crée une case aléatoire
+                        varvic = affichage()
                     if varvic == 1:
                         print("victoire")
 
