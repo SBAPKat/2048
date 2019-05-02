@@ -1,4 +1,4 @@
-read -p "Type B to create a new branch or type R for a regular upload (please only do when you're sure others are not working on the project at the same time, to be safe, type B) :" regular
+read -p "Type B to create/resume a new branch or type R for a regular upload (please only do when you're sure others are not working on the project at the same time, to be safe, type B) :" regular
 if [ "$regular" = "B" ]
 then
     echo "selecting Branch Upload"
