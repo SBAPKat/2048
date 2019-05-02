@@ -22,6 +22,8 @@ def exceptonormal():
 def move(deway):
     """fonction qui gere le deplacement, deway est la variable contenant le sens voulu, les variables i et k sont respectivement les lignes
     et les colones du tableau, afin de verifier si l'on a perdu, on renvoie la variable mouvement qui indique s'il y a au moins une case à bouger"""
+    global number_case # pour pouvoir modifier globalement number_case on doit le définir number_case comme la variable précédement définie globalement
+    #et non une autre variable globale
     mouvement = 0 # on initialise la variable qui informe si une case a bougé
     if deway == "down" or deway =="right":
         borneinf = 3 # valeur utilisée dans les boucles for qui suivent
@@ -46,9 +48,10 @@ def move(deway):
                         # fusionner deux fois une case lors d'un passage
                         tab[i][k] = 0 #L'ancienne position de la case est donc = à 0
                         mouvement = 1 #un mouvement a été effectué, mouvement est donc vrai
-                    if tab[i + sens][k] == 0 and tab[i][k] !=0:
-                        tab[i + sens][k] = tab[i][k]
-                        tab[i][k] = 0
+                        number_case -= 1 #deux case on fusionées, on retire une case du compteur
+                    if tab[i + sens][k] == 0 and tab[i][k] !=0: # la case adjacente est vide et la case à déplacer ne l'est pas
+                        tab[i + sens][k] = tab[i][k] #on place donc la case à déplacer à la place de la case adjacente
+                        tab[i][k] = 0 #L'ancienne posotion vaut donc 0
                         mouvement = 1
         exceptonormal()  # on retire les 1 ajoutés précedemment
         return mouvement
@@ -60,6 +63,7 @@ def move(deway):
                         tab[i][k + sens] = 2 * tab[i][k] + 1  # on fait fois deux pour combiner les cases
                         tab[i][k] = 0
                         mouvement = 1
+                        number_case -= 1
                     if tab[i][k + sens] == 0 and tab[i][k] !=0:
                         tab[i][k + sens] = tab[i][k]
                         tab[i][k] = 0
@@ -78,36 +82,28 @@ def images_load():
             image_dict_temp[key] = pygame.image.load(path).convert_alpha() # on stocke l'image donnée dans le dictionnaire
     return image_dict_temp
 
-def vic_def(mouvement):
+def defaite(mouvement):
     """Cette fonction va récupérer la variable mouvement qui informe si un mouvement de case a été effectué,
-    si aucun mouvement à été effectué et que le tableau est plein dans ce cas c'est la défaite
-    si lorsque qu'on compte les cases du tableau on détecte un 2048, c'est la victoire. """
-    number_cases = 0 # on initialise la variable qui compte les cases pleines
-    for x in range(5): # on parcourt le tableau afin de compter le nombre de cases
-        for y in range(5):
-            if tab[x][y] != 0:
-                number_cases = number_cases + 1
-        if tab[x][y] == 2048: # si un 2048 est présent victoire
-            return 1 # on retourne donc 1
-    if number_cases == 25 and mouvement == 0: # si aucun mouvement n'a été effectué et que le tableau est plein
-            return 2 # on renvoie 2
-            if tab[x][y] == 2048: # si un 2048 est présent victoire
-                return 1 # on retourne donc 1
-    if number_cases == 25 and mouvement == 0: # si aucun mouvement n'a été effectué et que le tableau est plein
-        return 2 # on renvoie 2
-    return 0 # sinon 0
+    si aucun mouvement à été effectué et que le tableau est plein dans ce cas c'est la défaite."""
+    if number_case == 25 and mouvement == 0: # si aucun mouvement n'a été effectué et que le tableau est plein
+            return 1 # on renvoie 1
+    else:
+            return 0 # sinon 0
 
 def random_case(score):
     """Place une case (2 ou 4 au hasard avec 2 ayant une probabilité de 0.75 et 4 de 0.25) dans TAB à une position aléatoire"""
     number = randr(0, 4)  # Choisit un nombre au hasard afin de déterminer si un 2 ou un 4 apparait
+    global number_case
     number_x, number_y = randr(0, 5), randr(0, 5)  # Choisit les coordonnées dans le tableau au hasard
     if tab[number_x][number_y] == 0:  # Vérifie si la case est vide
         if number == 0:  # if et else servent ici à déterminer 2 ou 4 à partir de la valeur aléatoire
             number = 4
             score = score + 4
+            number_case = number_case+1 # on ajoute une case
         else:
             number = 2
             score = score + 2
+            number_case = number_case+1
     else:
         score = random_case(score)
         return score
@@ -117,19 +113,22 @@ def random_case(score):
 
 def affichage(score):
     """Fonction qui lit le tableau(tab) ,afin d'associer à chaque nombre son image
-    correspondante et l'affiche, de plus elle gere le score"""
+    correspondante et l'affiche, de plus elle gere le score et vérifie la victoire"""
     fenetre.blit(image_dict.get("interface"), (0, 0))  # Affiche la grille de jeu
+    victoire = 0
     for x in range(0, 5):  # boucle qui parcourt le tableau
         for y in range(0, 5):
             if tab[x][y] != 0:
                 dispcoord = coords(x, y)  # Stocke dans la variable dispcoord l'equivalent en coordonnées dans le plan à partir des coordonnées dans le tableau
                 key = "case" + str(tab[x][y])  # "Crée le nom de l'objet à afficher
                 fenetre.blit(image_dict.get(key), dispcoord)  # Affiche l'objet
+            if tab[x][y] >= 2048: # si on détecte un 2048 ou plus
+               victoire = 1
     print(score)
     text_score = font.render(str(score), True, (0, 0, 0))
     fenetre.blit(text_score, (762, 77)) # on affiche le score
     pygame.display.flip()  # Rafraichit l'écran
-    return
+    return victoire
 
 
 
@@ -143,8 +142,9 @@ try:
     ResX = 1280  # Résolution écran horizontale
     ResY = 720  # Résolution écran verticale
     pygame.font.init()
-    font = pygame.font.Font('comic.ttf', 40) #on définit la police et la taille
-    score = 0 #on initialise le score
+    font = pygame.font.Font('comic.ttf', 40) # on définit la police et la taille
+    score = 0 # on initialise le score
+    number_case = 0 # ainsi que le compteur de case
     exceptions = [1, 3, 5, 9, 17, 33, 65, 129, 257, 513, 1025, 2049]
     # liste qui contient les exceptions pour les mouvements
     # elle est utilisée dans la fonction move
@@ -158,9 +158,7 @@ try:
     pygame.key.set_repeat(400, 30)
     image_dict = images_load()  # Fonction qui charge toutes les images
     # elle est utilisée dans la fonction random_case
-    affichage(score)
-    for g in range(5): # debug
-        print(tab[g])  # debug
+    varvic = affichage(score)
     while continuer: # boucle while principale
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -174,24 +172,23 @@ try:
                    mouvement = move("left")
                 elif event.key == K_RIGHT:
                    mouvement = move("right")
-                elif event.key == K_RETURN and victoireoudefaite == 2: # en cas de défaite et d'appui sur entrer
+                elif event.key == K_RETURN and vardefaite == 1: # en cas de défaite et d'appui sur entrer
                    for i in range(5): # on réinitialise le tableau
                        tab[i] = list(cons)
                        score = 0 # et le score
+                       number_case = 0 # et le nombre de case
             elif event.type == KEYUP:
                 if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN or event.key == K_RETURN:
-                    victoireoudefaite = vic_def(mouvement) # on vérifie la victoire ou défaite
-                    if victoireoudefaite == 1: # si victoire
-                        print("c'est gagné")
-                        score = random_case(score) # créée une case aléatoire
-                        affichage(score)
-                    elif victoireoudefaite == 2: # si défaite
+                    vardefaite = defaite(mouvement) # on vérifie la victoire ou défaite
+                    if vardefaite == 1: # si défaite
                         print("c'est perdu")
                         fenetre.blit(image_dict.get("defaite"), (0,0)) # Affiche le menu de défaite
                         pygame.display.flip()
-                    elif victoireoudefaite == 0: # si ni victoire ou défaite
+                    elif vardefaite == 0: # sinon
                         score = random_case(score) # crée une case aléatoire
-                        affichage(score)
+                        varvic = affichage(score)
+                    if varvic == 1:
+                        print("victoire")
 
 
 
