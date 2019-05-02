@@ -99,11 +99,11 @@ def random_case(score):
         if number == 0:  # if et else servent ici à déterminer 2 ou 4 à partir de la valeur aléatoire
             number = 4
             score = score + 4
-            number_case = number_case+1 # on ajoute une case
+            number_case += 1 # on ajoute une case
         else:
             number = 2
             score = score + 2
-            number_case = number_case+1
+            number_case += 1
     else:
         score = random_case(score)
         return score
