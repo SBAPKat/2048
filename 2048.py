@@ -25,7 +25,7 @@ def move(deway):
     et les colones du tableau, afin de verifier si l'on a perdu, on renvoie la variable mouvement qui indique s'il y a au moins une case à bouger"""
     global number_case # pour pouvoir modifier globalement number_case on doit le définir number_case comme la variable précédement définie globalement
     #et non une autre variable globale
-    mouvement = 0 # on initialise la variable qui informe si une case a bougé
+    mouvement = 0 # réinitialisation de mouvement
     if deway == "down" or deway =="right":
         borneinf = 3 # valeur utilisée dans les boucles for qui suivent
         bornesup = -1 # elle varie en fonction de la manière dont on veut parcourir
@@ -86,6 +86,8 @@ def images_load():
 def defaite(mouvement):
     """Cette fonction va récupérer la variable mouvement qui informe si un mouvement de case a été effectué,
     si aucun mouvement à été effectué et que le tableau est plein dans ce cas c'est la défaite."""
+    print("numbercase =", number_case)
+    print("mouvement =", mouvement)
     if number_case == 25 and mouvement == 0: # si aucun mouvement n'a été effectué et que le tableau est plein
             return 1 # on renvoie 1
     else:
@@ -118,9 +120,8 @@ def affichage():
     correspondante et l'affiche, de plus elle gere le score et vérifie la victoire"""
     global score
     global varvic
-    if varvic == 0:
-        interface = "interface"
-    else:
+    global interface
+    if varvic == 1:
         interface = "interface_win"
     fenetre.blit(image_dict.get(interface), (0, 0))  # Affiche la grille de jeu avec le bon fond d'écran
     victoire = 0
@@ -130,7 +131,7 @@ def affichage():
                 dispcoord = coords(x, y)  # Stocke dans la variable dispcoord l'equivalent en coordonnées dans le plan à partir des coordonnées dans le tableau
                 key = "case" + str(tab[x][y])  # "Crée le nom de l'objet à afficher
                 fenetre.blit(image_dict.get(key), dispcoord)  # Affiche l'objet
-            if tab[x][y] >= 2048: # si on détecte un 2048 ou plus
+            if tab[x][y] >= 8: # si on détecte un 2048 ou plus
                victoire = 1
     print(score)
     text_score = font.render(str(score), True, (0, 0, 0))
@@ -147,6 +148,7 @@ def coords(y, x):
 
 
 try:
+    mouvement = 0 # on initialise la variable qui informe si une case a bougé
     ResX = 1280  # Résolution écran horizontale
     ResY = 720  # Résolution écran verticale
     pygame.font.init() # initialisation de font
@@ -156,6 +158,8 @@ try:
     font = pygame.font.Font('comic.ttf', 40) # on définit la police et la taille
     score = 0 # on initialise le score
     varvic = 0 # initialisation pour le premier run de affichage()
+    vardefaite = 0
+    interface = "interface"
     number_case = 0 # ainsi que le compteur de case
     exceptions = [1, 3, 5, 9, 17, 33, 65, 129, 257, 513, 1025, 2049]
     # liste qui contient les exceptions pour les mouvements
@@ -190,7 +194,7 @@ try:
                        score = 0 # et le score
                        number_case = 0 # et le nombre de case
             elif event.type == KEYUP:
-                if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN or event.key == K_RETURN:
+                if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN or event.key == K_RETURN and (vardefaite == 1 or (varvic == 1 and vardefaite ==1)or varvic == 1 and interface == "interface"):
                     vardefaite = defaite(mouvement) # on vérifie la victoire ou défaite
                     if vardefaite == 1: # si défaite
                         print("c'est perdu")
@@ -199,7 +203,9 @@ try:
                     elif vardefaite == 0: # sinon
                         random_case() # crée une case aléatoire
                         varvic = affichage()
-                    if varvic == 1:
+                    if varvic == 1 and interface != "interface_win":
+                        fenetre.blit(image_dict.get("victoire"), (0,0)) # Affiche le menu de victoire
+                        pygame.display.flip()
                         print("victoire")
 
 
