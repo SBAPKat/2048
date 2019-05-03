@@ -86,8 +86,6 @@ def images_load():
 def defaite(mouvement):
     """Cette fonction va récupérer la variable mouvement qui informe si un mouvement de case a été effectué,
     si aucun mouvement à été effectué et que le tableau est plein dans ce cas c'est la défaite."""
-    print("numbercase =", number_case)
-    print("mouvement =", mouvement)
     if number_case == 25 and mouvement == 0: # si aucun mouvement n'a été effectué et que le tableau est plein
             return 1 # on renvoie 1
     else:
@@ -121,7 +119,7 @@ def affichage():
     global score
     global varvic
     global interface
-    if varvic == 1:
+    if varvic == 1: # si on a gagné, change le fond d'écran
         interface = "interface_win"
     fenetre.blit(image_dict.get(interface), (0, 0))  # Affiche la grille de jeu avec le bon fond d'écran
     victoire = 0
@@ -129,7 +127,7 @@ def affichage():
         for y in range(0, 5):
             if tab[x][y] != 0:
                 dispcoord = coords(x, y)  # Stocke dans la variable dispcoord l'equivalent en coordonnées dans le plan à partir des coordonnées dans le tableau
-                key = "case" + str(tab[x][y])  # "Crée le nom de l'objet à afficher
+                key = "case" + str(tab[x][y])  # "Créé le nom de l'objet à afficher
                 fenetre.blit(image_dict.get(key), dispcoord)  # Affiche l'objet
             if tab[x][y] >= 8: # si on détecte un 2048 ou plus
                victoire = 1
@@ -194,7 +192,7 @@ try:
                        score = 0 # et le score
                        number_case = 0 # et le nombre de case
             elif event.type == KEYUP:
-                if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN or event.key == K_RETURN and (vardefaite == 1 or (varvic == 1 and vardefaite ==1)or varvic == 1 and interface == "interface"):
+                if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN or event.key == K_RETURN and (vardefaite == 1 or (varvic == 1 and vardefaite ==1)or varvic == 1 and interface == "interface"): # si la touche pressée est utilisée par le programme, sauf Entrée, ou ce n'est pris que si on perd, ou si on gagne
                     vardefaite = defaite(mouvement) # on vérifie la victoire ou défaite
                     if vardefaite == 1: # si défaite
                         print("c'est perdu")
