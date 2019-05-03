@@ -1,5 +1,6 @@
 
 # coding=utf-8
+import math
 import pygame
 import os
 import traceback
@@ -146,7 +147,7 @@ try:
     pygame.font.init()
     pygame.mixer.init()
     pygame.mixer.music.load("background.mp3")
-    pygame.mixer.music.play(True, 0)
+    pygame.mixer.music.play(-1, 0) # -1 est le nombre de répétitions (ici infini), et 0 correspond au début de la musique
     font = pygame.font.Font('comic.ttf', 40) # on définit la police et la taille
     score = 0 # on initialise le score
     number_case = 0 # ainsi que le compteur de case
