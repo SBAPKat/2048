@@ -117,7 +117,12 @@ def affichage():
     """Fonction qui lit le tableau(tab) ,afin d'associer à chaque nombre son image
     correspondante et l'affiche, de plus elle gere le score et vérifie la victoire"""
     global score
-    fenetre.blit(image_dict.get("interface"), (0, 0))  # Affiche la grille de jeu
+    global varvic
+    if varvic == 0:
+        interface = "interface"
+    else:
+        interface = "interface_win"
+    fenetre.blit(image_dict.get(interface), (0, 0))  # Affiche la grille de jeu avec le bon fond d'écran
     victoire = 0
     for x in range(0, 5):  # boucle qui parcourt le tableau
         for y in range(0, 5):
@@ -150,6 +155,7 @@ try:
     pygame.mixer.music.play(-1, 0) # -1 est le nombre de répétitions (ici infini), et 0 correspond au début de la musique
     font = pygame.font.Font('comic.ttf', 40) # on définit la police et la taille
     score = 0 # on initialise le score
+    varvic = 0 # initialisation pour le premier run de affichage()
     number_case = 0 # ainsi que le compteur de case
     exceptions = [1, 3, 5, 9, 17, 33, 65, 129, 257, 513, 1025, 2049]
     # liste qui contient les exceptions pour les mouvements
