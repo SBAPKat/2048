@@ -144,6 +144,9 @@ try:
     ResX = 1280  # Résolution écran horizontale
     ResY = 720  # Résolution écran verticale
     pygame.font.init()
+    pygame.mixer.init()
+    pygame.mixer.music.load("background.mp3")
+    pygame.mixer.music.play(True, 0)
     font = pygame.font.Font('comic.ttf', 40) # on définit la police et la taille
     score = 0 # on initialise le score
     number_case = 0 # ainsi que le compteur de case
