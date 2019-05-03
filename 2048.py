@@ -144,9 +144,9 @@ def coords(y, x):
 try:
     ResX = 1280  # Résolution écran horizontale
     ResY = 720  # Résolution écran verticale
-    pygame.font.init()
-    pygame.mixer.init()
-    pygame.mixer.music.load("background.mp3")
+    pygame.font.init() # initialisation de font
+    pygame.mixer.init() # initialisation de mixer
+    pygame.mixer.music.load("background.mp3") # chargement du fichier mp3 'background'
     pygame.mixer.music.play(-1, 0) # -1 est le nombre de répétitions (ici infini), et 0 correspond au début de la musique
     font = pygame.font.Font('comic.ttf', 40) # on définit la police et la taille
     score = 0 # on initialise le score
