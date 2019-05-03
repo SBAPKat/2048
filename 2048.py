@@ -191,6 +191,10 @@ try:
                        tab[i] = list(cons)
                        score = 0 # et le score
                        number_case = 0 # et le nombre de case
+                       interface = "interface" # et l'interface
+                       varvic = 0 # et les variables défaite/win
+                       vardefaite=0
+                       affichage()
             elif event.type == KEYUP:
                 if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN or event.key == K_RETURN and (vardefaite == 1 or (varvic == 1 and vardefaite ==1)or varvic == 1 and interface == "interface"): # si la touche pressée est utilisée par le programme, sauf Entrée, ou ce n'est pris que si on perd, ou si on gagne
                     vardefaite = defaite(mouvement) # on vérifie la victoire ou défaite
