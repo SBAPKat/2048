@@ -4,10 +4,28 @@ import math
 import pygame
 import os
 import traceback
+from PIL import Image, ImageDraw, ImageFont
 from random import randrange as randr
 from pygame.locals import *
 
 pygame.init()
+
+
+def imagegen(case_title):
+    case_content = ''
+    for character in case_title:
+        if character not in 'case':
+            case_content = case_content + character
+    default = Image.open('pictures/default.png') # ouvre image "default"
+    txt = Image.new('RGBA', default.size, (255,255,255,0)) # créée une image vide avec channels rouge bleu vert et transparence, de la taile de default, fond transparent
+    fnt = ImageFont.truetype('comic.ttf',20) # Récupère la police, et le règle sur la taille voulue
+    d = ImageDraw.Draw(txt) # Récupère le contexte de dessin de l'image txt
+    d.text((0,20), case_content, font=fnt, fill=(200,200,200,255)) # ecrit le numéro de la case sur le contexte de dessin, en gris clair
+    output = Image.alpha_composite(default, txt) # calque l'image txt sur l'image default
+    case_title = "pictures/" + case_title + ".png" # ajoute l'extension et l'arborescence au titre
+    output.save(case_title) # sauvegarde l'image sous le titre fait précedemment
+    
+    
 
 def exceptonormal():
     """fonction exécutée dans move
@@ -119,6 +137,7 @@ def affichage():
     global score
     global varvic
     global interface
+    global image_dict
     if varvic == 1: # si on a gagné, change le fond d'écran
         interface = "interface_win"
     fenetre.blit(image_dict.get(interface), (0, 0))  # Affiche la grille de jeu avec le bon fond d'écran
@@ -128,7 +147,12 @@ def affichage():
             if tab[x][y] != 0:
                 dispcoord = coords(x, y)  # Stocke dans la variable dispcoord l'equivalent en coordonnées dans le plan à partir des coordonnées dans le tableau
                 key = "case" + str(tab[x][y])  # "Créé le nom de l'objet à afficher
-                fenetre.blit(image_dict.get(key), dispcoord)  # Affiche l'objet
+                if key in image_dict:
+                    fenetre.blit(image_dict.get(key), dispcoord)  # Affiche l'objet
+                else:
+                    imagegen(key)
+                    image_dict = images_load()
+                    fenetre.blit(image_dict.get(key), dispcoord)  # Affiche l'objet
             if tab[x][y] >= 8: # si on détecte un 2048 ou plus
                victoire = 1
     print(score)
