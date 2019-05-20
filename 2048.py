@@ -150,7 +150,7 @@ def affichage():
                 if key in image_dict:
                     fenetre.blit(image_dict.get(key), dispcoord)  # Affiche l'objet
                 else:
-                    imagegen(key)
+                    imagegen(key) # on génère  une  image
                     image_dict = images_load()
                     fenetre.blit(image_dict.get(key), dispcoord)  # Affiche l'objet
             if tab[x][y] >= 8: # si on détecte un 2048 ou plus
@@ -170,6 +170,7 @@ def coords(y, x):
 
 
 try:
+    volume = 1.0 # on initialise la variable volume
     mouvement = 0 # on initialise la variable qui informe si une case a bougé
     ResX = 1280  # Résolution écran horizontale
     ResY = 720  # Résolution écran verticale
@@ -179,6 +180,7 @@ try:
     pygame.mixer.music.play(-1, 0) # -1 est le nombre de répétitions (ici infini), et 0 correspond au début de la musique
     font = pygame.font.Font('comic.ttf', 40) # on définit la police et la taille
     score = 0 # on initialise le score
+    pygame.mixer.music.set_volume(volume) # On définit le volume de base
     varvic = 0 # initialisation pour le premier run de affichage()
     vardefaite = 0
     interface = "interface"
@@ -199,6 +201,13 @@ try:
     varvic = affichage()
     while continuer: # boucle while principale
         for event in pygame.event.get():
+            if event.type == MOUSEBUTTONDOWN:
+                if event.button == 4: #roll up
+                    volume += 0.2
+                    pygame.mixer.music.set_volume(volume)
+                elif event.button == 5: #roll down
+                    volume -= 0.2
+                    pygame.mixer.music.set_volume(volume)
             if event.type == QUIT:
                 continuer = 0
             elif event.type == KEYDOWN:
