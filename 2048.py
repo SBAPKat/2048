@@ -24,8 +24,7 @@ def imagegen(case_title):
     output = Image.alpha_composite(default, txt) # calque l'image txt sur l'image default
     case_title = "pictures/" + case_title + ".png" # ajoute l'extension et l'arborescence au titre
     output.save(case_title) # sauvegarde l'image sous le titre fait précedemment
-    
-    
+
 
 def exceptonormal():
     """fonction exécutée dans move
@@ -153,9 +152,8 @@ def affichage():
                     imagegen(key) # on génère  une  image
                     image_dict = images_load()
                     fenetre.blit(image_dict.get(key), dispcoord)  # Affiche l'objet
-            if tab[x][y] >= 8: # si on détecte un 2048 ou plus
+            if tab[x][y] >= 2048: # si on détecte un 2048 ou plus
                victoire = 1
-    print(score)
     text_score = font.render(str(score), True, (0, 0, 0))
     fenetre.blit(text_score, (762, 77)) # on affiche le score
     pygame.display.flip()  # Rafraichit l'écran
@@ -202,11 +200,11 @@ try:
     while continuer: # boucle while principale
         for event in pygame.event.get():
             if event.type == MOUSEBUTTONDOWN:
-                if event.button == 4: #roll up
-                    volume += 0.2
+                if event.button == 4 and volume < 1: #roll up
+                    volume += 0.05
                     pygame.mixer.music.set_volume(volume)
-                elif event.button == 5: #roll down
-                    volume -= 0.2
+                elif event.button == 5 and volume > 0: #roll down
+                    volume -= 0.05
                     pygame.mixer.music.set_volume(volume)
             if event.type == QUIT:
                 continuer = 0
@@ -232,7 +230,6 @@ try:
                 if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN or event.key == K_RETURN and (vardefaite == 1 or (varvic == 1 and vardefaite ==1)or varvic == 1 and interface == "interface"): # si la touche pressée est utilisée par le programme, sauf Entrée, ou ce n'est pris que si on perd, ou si on gagne
                     vardefaite = defaite(mouvement) # on vérifie la victoire ou défaite
                     if vardefaite == 1: # si défaite
-                        print("c'est perdu")
                         fenetre.blit(image_dict.get("defaite"), (0,0)) # Affiche le menu de défaite
                         pygame.display.flip()
                     elif vardefaite == 0: # sinon
@@ -241,8 +238,6 @@ try:
                     if varvic == 1 and interface != "interface_win":
                         fenetre.blit(image_dict.get("victoire"), (0,0)) # Affiche le menu de victoire
                         pygame.display.flip()
-                        print("victoire")
-
 
 
 except:
