@@ -166,84 +166,74 @@ def coords(y, x):
     # pour la case suivante est de 71, on ajoute donc x et y fois 71 afin d'avoir les coordonnées de la case souhaitée
 
 
-try:
-    volume = 1.0 # on initialise la variable volume
-    mouvement = 0 # on initialise la variable qui informe si une case a bougé
-    ResX = 1280  # Résolution écran horizontale
-    ResY = 720  # Résolution écran verticale
-    pygame.font.init() # initialisation de font
-    pygame.mixer.init() # initialisation de mixer
-    pygame.mixer.music.load("background.mp3") # chargement du fichier mp3 'background'
-    pygame.mixer.music.play(-1, 0) # -1 est le nombre de répétitions (ici infini), et 0 correspond au début de la musique
-    font = pygame.font.Font('comic.ttf', 40) # on définit la police et la taille
-    score = 0 # on initialise le score
-    pygame.mixer.music.set_volume(volume) # On définit le volume de base
-    varvic = 0 # initialisation pour le premier run de affichage()
-    vardefaite = 0
-    interface = "interface"
-    number_case = 0 # ainsi que le compteur de case
-    exceptions = [1, 3, 5, 9, 17, 33, 65, 129, 257, 513, 1025, 2049]
-    # liste qui contient les exceptions pour les mouvements
-    # elle est utilisée dans la fonction move
-    cons = [0] * 5  # Création du tableau contenant les cases
-    tab = [0] * 5
-    for i in range(5):
-        tab[i] = list(cons)
-    os.environ['SDL_VIDEO_WINDOW_POS'] = "50, 50"
-    fenetre = pygame.display.set_mode((ResX, ResY))
-    continuer = 1
-    pygame.key.set_repeat(400, 30)
-    image_dict = images_load()  # Fonction qui charge toutes les images
-    # elle est utilisée dans la fonction random_case
-    varvic = affichage()
-    while continuer: # boucle while principale
-        for event in pygame.event.get():
-            if event.type == MOUSEBUTTONDOWN:
-                if event.button == 4 and volume < 1: #roll up
-                    volume += 0.05
-                    pygame.mixer.music.set_volume(volume)
-                elif event.button == 5 and volume > 0: #roll down
-                    volume -= 0.05
-                    pygame.mixer.music.set_volume(volume)
-            if event.type == QUIT:
-                continuer = 0
-            elif event.type == KEYDOWN:
-                if event.key == K_DOWN and vardefaite == 0:
-                   mouvement = move("down") # on demande de tenter de déplacer les cases vers le bas, si au moins une case bouge mouvement =1
-                elif event.key == K_UP and vardefaite == 0:
-                   mouvement = move("up")
-                elif event.key == K_LEFT and vardefaite == 0:
-                   mouvement = move("left")
-                elif event.key == K_RIGHT and vardefaite == 0:
-                   mouvement = move("right")
-                elif event.key == K_RETURN and vardefaite == 1: # en cas de défaite et d'appui sur entrer
-                   for i in range(5): # on réinitialise le tableau
-                       tab[i] = list(cons)
-                       score = 0 # et le score
-                       number_case = 0 # et le nombre de case
-                       interface = "interface" # et l'interface
-                       varvic = 0 # et les variables défaite/win
-                       vardefaite=0
-                       affichage()
-            elif event.type == KEYUP:
-                if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN or event.key == K_RETURN and (vardefaite == 1 or (varvic == 1 and vardefaite ==1)or varvic == 1 and interface == "interface"): # si la touche pressée est utilisée par le programme, sauf Entrée, ou ce n'est pris que si on perd, ou si on gagne
-                    vardefaite = defaite(mouvement) # on vérifie la victoire ou défaite
-                    if vardefaite == 1: # si défaite
-                        fenetre.blit(image_dict.get("defaite"), (0,0)) # Affiche le menu de défaite
-                        pygame.display.flip()
-                    elif vardefaite == 0: # sinon
-                        random_case() # crée une case aléatoire
-                        varvic = affichage()
-                    if varvic == 1 and interface != "interface_win":
-                        fenetre.blit(image_dict.get("victoire"), (0,0)) # Affiche le menu de victoire
-                        pygame.display.flip()
-
-
-except:
-    traceback.print_exc()
-
-
-finally:
-    pygame.quit()
-    exit()
+volume = 1.0 # on initialise la variable volume
+mouvement = 0 # on initialise la variable qui informe si une case a bougé
+ResX = 1280  # Résolution écran horizontale
+ResY = 720  # Résolution écran verticale
+pygame.font.init() # initialisation de font
+pygame.mixer.init() # initialisation de mixer
+pygame.mixer.music.load("background.mp3") # chargement du fichier mp3 'background'
+pygame.mixer.music.play(-1, 0) # -1 est le nombre de répétitions (ici infini), et 0 correspond au début de la musique
+font = pygame.font.Font('comic.ttf', 40) # on définit la police et la taille
+score = 0 # on initialise le score
+pygame.mixer.music.set_volume(volume) # On définit le volume de base
+varvic = 0 # initialisation pour le premier run de affichage()
+vardefaite = 0
+interface = "interface"
+number_case = 0 # ainsi que le compteur de case
+exceptions = [1, 3, 5, 9, 17, 33, 65, 129, 257, 513, 1025, 2049]
+# liste qui contient les exceptions pour les mouvements
+# elle est utilisée dans la fonction move
+cons = [0] * 5  # Création du tableau contenant les cases
+tab = [0] * 5
+for i in range(5):
+    tab[i] = list(cons)
+os.environ['SDL_VIDEO_WINDOW_POS'] = "50, 50"
+fenetre = pygame.display.set_mode((ResX, ResY))
+continuer = 1
+pygame.key.set_repeat(400, 30)
+image_dict = images_load()  # Fonction qui charge toutes les images
+# elle est utilisée dans la fonction random_case
+varvic = affichage()
+while continuer: # boucle while principale
+    for event in pygame.event.get():
+        if event.type == MOUSEBUTTONDOWN:
+            if event.button == 4 and volume < 1: #roll up
+                volume += 0.05
+                pygame.mixer.music.set_volume(volume)
+            elif event.button == 5 and volume > 0: #roll down
+                volume -= 0.05
+                pygame.mixer.music.set_volume(volume)
+        if event.type == QUIT:
+            continuer = 0
+        elif event.type == KEYDOWN:
+            if event.key == K_DOWN and vardefaite == 0:
+               mouvement = move("down") # on demande de tenter de déplacer les cases vers le bas, si au moins une case bouge mouvement =1
+            elif event.key == K_UP and vardefaite == 0:
+               mouvement = move("up")
+            elif event.key == K_LEFT and vardefaite == 0:
+               mouvement = move("left")
+            elif event.key == K_RIGHT and vardefaite == 0:
+               mouvement = move("right")
+            elif event.key == K_RETURN and vardefaite == 1: # en cas de défaite et d'appui sur entrer
+               for i in range(5): # on réinitialise le tableau
+                   tab[i] = list(cons)
+                   score = 0 # et le score
+                   number_case = 0 # et le nombre de case
+                   interface = "interface" # et l'interface
+                   varvic = 0 # et les variables défaite/win
+                   vardefaite=0
+                   affichage()
+        elif event.type == KEYUP:
+            if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN or event.key == K_RETURN and (vardefaite == 1 or (varvic == 1 and vardefaite ==1)or varvic == 1 and interface == "interface"): # si la touche pressée est utilisée par le programme, sauf Entrée, ou ce n'est pris que si on perd, ou si on gagne
+                vardefaite = defaite(mouvement) # on vérifie la victoire ou défaite
+                if vardefaite == 1: # si défaite
+                    fenetre.blit(image_dict.get("defaite"), (0,0)) # Affiche le menu de défaite
+                    pygame.display.flip()
+                elif vardefaite == 0: # sinon
+                    random_case() # crée une case aléatoire
+                    varvic = affichage()
+                if varvic == 1 and interface != "interface_win":
+                    fenetre.blit(image_dict.get("victoire"), (0,0)) # Affiche le menu de victoire
+                    pygame.display.flip()
 
