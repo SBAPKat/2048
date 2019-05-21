@@ -1,6 +1,5 @@
 
 # coding=utf-8
-import math
 import pygame
 import os
 import traceback
@@ -209,13 +208,13 @@ try:
             if event.type == QUIT:
                 continuer = 0
             elif event.type == KEYDOWN:
-                if event.key == K_DOWN:
+                if event.key == K_DOWN and vardefaite == 0:
                    mouvement = move("down") # on demande de tenter de déplacer les cases vers le bas, si au moins une case bouge mouvement =1
-                elif event.key == K_UP:
+                elif event.key == K_UP and vardefaite == 0:
                    mouvement = move("up")
-                elif event.key == K_LEFT:
+                elif event.key == K_LEFT and vardefaite == 0:
                    mouvement = move("left")
-                elif event.key == K_RIGHT:
+                elif event.key == K_RIGHT and vardefaite == 0:
                    mouvement = move("right")
                 elif event.key == K_RETURN and vardefaite == 1: # en cas de défaite et d'appui sur entrer
                    for i in range(5): # on réinitialise le tableau
@@ -247,3 +246,4 @@ except:
 finally:
     pygame.quit()
     exit()
+
