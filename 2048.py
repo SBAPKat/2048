@@ -11,7 +11,6 @@ pygame.init()
 
 
 def imagegen(case_title):
-    global exceptions
     case_content = ''
     for character in case_title:
         if character not in 'case':
@@ -33,7 +32,7 @@ def exceptonormal():
     une fois toutes les cases déplacées"""
     for i in range(5):
         for k in range(5):
-            if tab[i][k] in exceptions: # on vérifie si la case parcourue contient un nombre impair
+            if tab[i][k] % 2 == 1: # on vérifie si la case parcourue contient un nombre impair
                 tab[i][k] = tab[i][k] - 1 #si oui on retire 1
     return
 
@@ -60,8 +59,8 @@ def move(deway):
         for passage in range(4): # Pour qu'une case parcourt tout le tableau, elle doit se déplacer de 4 cases 
             for i in range(borneinf,bornesup,pas): # minimum, maximum, pas, on lit le  tableau  ligne par ligne
                 for k in range(5):
-                    if tab[i + sens][k] == tab[i][k] and tab[i][k] not in exceptions and tab[i][k] != 0: # si la case adjacente est la case à déplacer sont identiques
-                        # et qu'elles n'ont pas deja été fusionées (non impair) 
+                    if tab[i + sens][k] == tab[i][k] and tab[i][k] % 2 == 0 and tab[i][k] != 0: # si la case adjacente est la case à déplacer sont identiques
+                        # et qu'elles n'ont pas deja été fusionées (nombre impair) 
                         tab[i + sens][k] = 2 * tab[i][k] + 1 
                         # on fait fois deux pour combiner les cases, puis on rajoute 1 afin de ne pas
                         # fusionner deux fois une case lors d'un passage
@@ -78,7 +77,7 @@ def move(deway):
         for passage in range(4):
             for k in range(borneinf,bornesup,pas): # on lit le tableau colones par colones
                 for i in range(5):
-                    if tab[i][k + sens] == tab[i][k] and tab[i][k] not in exceptions and tab[i][k] != 0:
+                    if tab[i][k + sens] == tab[i][k] and tab[i][k] % 2 == 0 and tab[i][k] != 0:
                         tab[i][k + sens] = 2 * tab[i][k] + 1  # on fait fois deux pour combiner les cases
                         tab[i][k] = 0
                         mouvement = 1
@@ -183,9 +182,6 @@ varvic = 0 # initialisation pour le premier run de affichage()
 vardefaite = 0
 interface = "interface"
 number_case = 0 # ainsi que le compteur de case
-exceptions = [1, 3, 5, 9, 17, 33, 65, 129, 257, 513, 1025, 2049]
-# liste qui contient les exceptions pour les mouvements
-# elle est utilisée dans la fonction move
 cons = [0] * 5  # Création du tableau contenant les cases
 tab = [0] * 5
 for i in range(5):
