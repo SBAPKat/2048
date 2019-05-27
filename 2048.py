@@ -133,9 +133,9 @@ def random_case():
 def display():
     """Fonction qui lit le tableau(tab) ,afin d'associer à chaque nombre son image
     correspondante et l'affiche, de plus elle gere le score et vérifie la victoire"""
-    global score
-    global varvic
-    global interface
+    global score # on spécifie que l'on utilise les variables gloabale
+    global varvic # de manière à ce que lorsque on les modifies
+    global interface # ce soit de manière gloabale et non locale
     global image_dict
     if varvic == 1: # si on a gagné, change le fond d'écran
         interface = "interface_win"
@@ -146,12 +146,12 @@ def display():
             if tab[x][y] != 0:
                 dispcoord = coords(x, y)  # Stocke dans la variable dispcoord l'equivalent en coordonnées dans le plan à partir des coordonnées dans le tableau
                 key = "case" + str(tab[x][y])  # "Créé le nom de l'objet à afficher
-                if key in image_dict:
+                if key in image_dict: #si la case existe
                     window.blit(image_dict.get(key), dispcoord)  # Affiche l'objet
                 else:
-                    imagegen(key) # on génère  une  image
-                    image_dict = images_load()
-                    window.blit(image_dict.get(key), dispcoord)  # Affiche l'objet
+                    imagegen(key) # on génère une image
+                    image_dict = images_load() # on met a jour le dictionnaire
+                    window.blit(image_dict.get(key), dispcoord)  # Affiche la case nouvellement crée
             if tab[x][y] >= 2048: # si on détecte un 2048 ou plus
                victoire = 1
     text_score = font.render(str(score), True, (0, 0, 0))
