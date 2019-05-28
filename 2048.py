@@ -1,5 +1,5 @@
 
-# coding=utf-8
+# coadingding=utf-8
 import pygame
 import os
 import traceback
@@ -38,11 +38,9 @@ def exceptonormal():
 
 def move(deway):
     """fonction qui gere le deplacement, deway est la variable contenant le sens voulu, les variables x et y sont respectivement
-    les lignes et les colones du tableau, afin de verifier si l'on a perdu, on renvoie la variable movement qui indique
-    s'il y a au moins une case à bouger"""
+    les lignes et les colones du tableau"""
     global number_case # pour pouvoir modifier globalement number_case on doit définir number_case
     # comme la variable précédement définie globalement
-    movement = 0 # réinitialisation de movement
     if deway == "down" or deway =="right":
         borninf = 3 # valeur utilisée dans les boucles for qui suivent
         bornsup = -1 # elle varie en fonction de la manière dont on veut parcourir
@@ -65,14 +63,12 @@ def move(deway):
                         # on fait fois deux pour combiner les cases, puis on rajoute 1 afin de ne pas
                         # fusionner deux fois une case lors d'un passage
                         tab[x][y] = 0 #L'ancienne position de la case est donc = à 0
-                        movement = 1 #un mouvement a été effectué, movement est donc vrai
                         number_case -= 1 #deux case on fusionées, on retire une case du compteur
                     if tab[x + direction][y] == 0 and tab[x][y] !=0: # la case adjacente est vide et la case à déplacer ne l'est pas
                         tab[x + direction][y] = tab[x][y] #on place donc la case à déplacer à la place de la case adjacente
                         tab[x][y] = 0 #L'ancienne posotion vaut donc 0
-                        movement = 1
         exceptonormal()  # on retire les 1 ajoutés précedemment
-        return movement
+        return
     else:
         for passage in range(4):
             for y in range(borninf,bornsup,step): # on lit le tableau colones par colones
@@ -80,14 +76,12 @@ def move(deway):
                     if tab[x][y + direction] == tab[x][y] and tab[x][y] % 2 == 0 and tab[x][y] != 0:
                         tab[x][y + direction] = 2 * tab[x][y] + 1  # on fait fois deux pour combiner les cases
                         tab[x][y] = 0
-                        movement = 1
                         number_case -= 1
                     if tab[x][y + direction] == 0 and tab[x][y] !=0:
                         tab[x][y + direction] = tab[x][y]
                         tab[x][y] = 0
-                        movement =1
         exceptonormal()
-        return movement
+        return
 
 def images_load():
     """Charge les images et les stocke dans un dictionnaire qu'elle renvoie"""
@@ -100,13 +94,12 @@ def images_load():
             image_dict_temp[key] = pygame.image.load(path).convert_alpha() # on stocke l'image donnée dans le dictionnaire
     return image_dict_temp
 
-def defeat(movement):
-    """Cette fonction va récupérer la variable movement qui informe si un mouvement de case a été effectué,
-    si aucun mouvement à été effectué et que le tableau est plein dans ce cas c'est la défaite."""
-    if number_case == 25 and movement == 0: # si aucun mouvement n'a été effectué et que le tableau est plein
-            return 1 # on renvoie 1
+def defeat():
+    """Si le tableau est plein dans ce cas c'est la défaite."""
+    if number_case == 25 :# le tableau est plein
+        return 1 # on renvoie 1
     else:
-            return 0 # sinon 0
+        return 0 # sinon 0
 
 def random_case():
     """Place une case (2 ou 4 au hasard avec 2 ayant une probabilité de 0.75 et 4 de 0.25) dans TAB à une position aléatoire"""
@@ -168,7 +161,6 @@ def coords(y, x):
 
 
 volume = 1.0 # on initialise la variable volume
-movement = 0 # on initialise la variable qui informe si une case a bougé
 ResX = 1280  # Résolution écran horizontale
 ResY = 720  # Résolution écran verticale
 pygame.font.init() # initialisation de font
@@ -206,13 +198,13 @@ while running: # boucle while principale
             running = 0
         elif event.type == KEYDOWN:
             if event.key == K_DOWN and vardefeat == 0:
-               movement = move("down") # on demande de tenter de déplacer les cases vers le bas
-            elif event.key == K_UP and vardefeat == 0: # si au moins une case bouge movement =1
-               movement = move("up")
+               move("down") # on demande de tenter de déplacer les cases vers le bas
+            elif event.key == K_UP and vardefeat == 0:
+               move("up")
             elif event.key == K_LEFT and vardefeat == 0:
-               movement = move("left")
+               move("left")
             elif event.key == K_RIGHT and vardefeat == 0:
-               movement = move("right")
+               move("right")
             elif event.key == K_RETURN and vardefeat == 1: # en cas de défaite et d'appui sur entrer
                for i in range(5): # on réinitialise le tableau
                    tab[i] = list(cons)
@@ -224,7 +216,7 @@ while running: # boucle while principale
                    display()
         elif event.type == KEYUP:
             if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN or event.key == K_RETURN and (vardefeat == 1 or (varvic == 1 and vardefeat ==1)or varvic == 1 and interface == "interface"): # si la touche pressée est utilisée par le programme, sauf Entrée, ou ce n'est pris que si on perd, ou si on gagne
-                vardefeat = defeat(movement) # on vérifie la victoire ou défaite
+                vardefeat = defeat() # on vérifie la victoire ou défaite
                 if vardefeat == 1: # si défaite
                     window.blit(image_dict.get("defaite"), (0,0)) # Affiche le menu de défaite
                     pygame.display.flip()
