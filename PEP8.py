@@ -17,7 +17,8 @@ def imagegen(case_title):
             case_content = case_content + character
     # ouvre image "default"
     default = Image.open(os.path.join('pictures', 'default.png'))
-    # créée une image vide avec channels rouge bleu vert et transparence, de la taile de default, fond transparent
+    # créée une image vide avec channels rouge bleu vert et transparence,
+    # de la taile de default, fond transparent
     txt = Image.new('RGBA', default.size, (255, 255, 255, 0))
     # Récupère la police, et le règle sur la taille voulue
     fnt = ImageFont.truetype('comic.ttf', 20)
@@ -43,8 +44,8 @@ def exceptonormal():
 
 
 def move(deway):
-    """fonction qui gere le deplacement, deway est la variable contenant le sens voulu, les variables x et y sont respectivement
-    les lignes et les colones du tableau"""
+    """fonction qui gere le deplacement, deway est la variable contenant le sens voulu,
+    les variables x et y sont respectivementles lignes et les colones du tableau"""
     global number_case  # pour pouvoir modifier globalement number_case on doit définir number_case
     # comme la variable précédement définie globalement
     if deway == "down" or deway == "right":
@@ -108,8 +109,8 @@ def images_load():
             # Récupère le chemin d'accès au fichier et le stocke dans path
             path = os.path.join("pictures", filename)
             # Crée une clé pour accéder à l'élément dans le dictionnaire en prenant le nom du
-            key = filename[:-4]
             # fichier et en enlevant l'extension (-4 caractères)
+            key = filename[:-4]
             # on stocke l'image donnée dans le dictionnaire
             image_dict_temp[key] = pygame.image.load(path).convert_alpha()
     return image_dict_temp
@@ -125,8 +126,8 @@ def defeat():
 
 def random_case():
     """Place une case (2 ou 4 au hasard avec 2 ayant une probabilité de 0.75 et 4 de 0.25) dans TAB à une position aléatoire"""
-    number = randr(
-        0, 4)  # Choisit un nombre au hasard afin de déterminer si un 2 ou un 4 apparait
+    number = randr(0,4)  
+    # Choisit un nombre au hasard afin de déterminer si un 2 ou un 4 apparait
     global number_case
     global score
     # Choisit les coordonnées dans le tableau au hasard
@@ -163,7 +164,8 @@ def display():
     for x in range(0, 5):  # boucle qui parcourt le tableau
         for y in range(0, 5):
             if tab[x][y] != 0:
-                # Stocke dans la variable dispcoord l'equivalent en coordonnées dans le plan à partir des coordonnées dans le tableau
+                # Stocke dans la variable dispcoord l'equivalent en coordonnées dans le plan
+                # à partir des coordonnées dans le tableau
                 dispcoord = coords(x, y)
                 # "Créé le nom de l'objet à afficher
                 key = "case" + str(tab[x][y])
