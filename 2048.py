@@ -15,13 +15,13 @@ def imagegen(case_title):
     for character in case_title:
         if character not in 'case':
             case_content = case_content + character
-    default = Image.open('pictures/default.png') # ouvre image "default"
+    default = Image.open(os.path.join('pictures', 'default.png')) # ouvre image "default"
     txt = Image.new('RGBA', default.size, (255,255,255,0)) # créée une image vide avec channels rouge bleu vert et transparence, de la taile de default, fond transparent
     fnt = ImageFont.truetype('comic.ttf',20) # Récupère la police, et le règle sur la taille voulue
     d = ImageDraw.Draw(txt) # Récupère le contexte de dessin de l'image txt
     d.text((0,20), case_content, font=fnt, fill=(200,200,200,255)) # ecrit le numéro de la case sur le contexte de dessin, en gris clair
     output = Image.alpha_composite(default, txt) # calque l'image txt sur l'image default
-    case_title = "pictures/" + case_title + ".png" # ajoute l'extension et l'arborescence au titre
+    case_title = os.path.join('pictures', case_title)+'.png'
     output.save(case_title) # sauvegarde l'image sous le titre fait précedemment
 
 
