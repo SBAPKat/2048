@@ -23,7 +23,7 @@ def imagegen(case_title):
     output = Image.alpha_composite(default, txt) # calque l'image txt sur l'image default
     case_title = os.path.join('pictures', case_title)+'.png'
     output.save(case_title) # sauvegarde l'image sous le titre fait précedemment
-
+dfssdfsf
 
 def exceptonormal():
     """fonction exécutée dans move
