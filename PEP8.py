@@ -126,7 +126,7 @@ def defeat():
 
 def random_case():
     """Place une case (2 ou 4 au hasard avec 2 ayant une probabilité de 0.75 et 4 de 0.25) dans TAB à une position aléatoire"""
-    number = randr(0,4)  
+    number = randr(0, 4)
     # Choisit un nombre au hasard afin de déterminer si un 2 ou un 4 apparait
     global number_case
     global score
@@ -153,7 +153,7 @@ def display():
     """Fonction qui lit le tableau(tab), afin d'associer à chaque nombre son image
     correspondante et l'affiche, de plus elle gere le score et vérifie la victoire"""
     global score  # on spécifie que l'on utilise les variables globales
-    global varvic  # afin qu'on puisse les modidier 
+    global varvic  # afin qu'on puisse les modidier
     global background  # de manière globale et non de manière locale
     global image_dict
     if varvic == 1:  # si on a gagné, change le fond d'écran
