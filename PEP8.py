@@ -149,16 +149,16 @@ def random_case():
 
 
 def display():
-    """Fonction qui lit le tableau(tab) ,afin d'associer à chaque nombre son image
+    """Fonction qui lit le tableau(tab), afin d'associer à chaque nombre son image
     correspondante et l'affiche, de plus elle gere le score et vérifie la victoire"""
-    global score  # on spécifie que l'on utilise les variables gloabale
-    global varvic  # de manière à ce que lorsque on les modifies
-    global interface  # ce soit de manière gloabale et non locale
+    global score  # on spécifie que l'on utilise les variables globales
+    global varvic  # afin qu'on puisse les modidier 
+    global background  # de manière globale et non de manière locale
     global image_dict
     if varvic == 1:  # si on a gagné, change le fond d'écran
-        interface = "interface_win"
+        background = "background_win"
     # Affiche la grille de jeu avec le bon fond d'écran
-    window.blit(image_dict.get(interface), (0, 0))
+    window.blit(image_dict.get(background), (0, 0))
     victoire = 0
     for x in range(0, 5):  # boucle qui parcourt le tableau
         for y in range(0, 5):
@@ -203,7 +203,7 @@ score = 0  # on initialise le score
 pygame.mixer.music.set_volume(volume)  # On définit le volume de base
 varvic = 0  # initialisation pour le premier run de display()
 vardefeat = 0
-interface = "interface"
+background = "background"
 number_case = 0  # ainsi que le compteur de case
 cons = [0] * 5  # Création du tableau contenant les cases
 tab = [0] * 5
@@ -242,13 +242,13 @@ while running:  # boucle while principale
                     tab[i] = list(cons)
                     score = 0  # et le score
                     number_case = 0  # et le nombre de case
-                    interface = "interface"  # et l'interface
+                    background = "background"  # et le fond d'ecran
                     varvic = 0  # et les variables défaite/win
                     vardefeat = 0
                     display()
         elif event.type == KEYUP:
             # si la touche pressée est utilisée par le programme, sauf Entrée, ou ce n'est pris que si on perd, ou si on gagne
-            if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN or event.key == K_RETURN and (vardefeat == 1 or (varvic == 1 and vardefeat == 1)or varvic == 1 and interface == "interface"):
+            if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN or event.key == K_RETURN and (vardefeat == 1 or (varvic == 1 and vardefeat == 1)or varvic == 1 and background == "background"):
                 vardefeat = defeat()  # on vérifie la victoire ou défaite
                 if vardefeat == 1:  # si défaite
                     # Affiche le menu de défaite
@@ -257,7 +257,7 @@ while running:  # boucle while principale
                 elif vardefeat == 0:  # sinon
                     random_case()  # crée une case aléatoire
                     varvic = display()
-                if varvic == 1 and interface != "interface_win":
+                if varvic == 1 and background != "background_win":
                     # Affiche le menu de victoire
                     window.blit(image_dict.get("victoire"), (0, 0))
                     pygame.display.flip()
