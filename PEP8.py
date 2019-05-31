@@ -232,14 +232,14 @@ while running:  # Boucle while principale
         if event.type == QUIT: # Appui sur la croix
             running = 0
         elif event.type == KEYDOWN: # Si on détecte une frape de clavier
-            if event.key == K_DOWN and vardefeat == 0: # Flèche du bas
+            if event.key == K_DOWN and vardefeat == 0 and menu_victory == 0: # Flèche du bas
                 # On demande de tenter de déplacer les cases vers le bas
                 move("down")
-            elif event.key == K_UP and vardefeat == 0: # Flèche du haut
+            elif event.key == K_UP and vardefeat == 0 and menu_victory == 0: # Flèche du haut
                 move("up")
-            elif event.key == K_LEFT and vardefeat == 0: #Flèche de gauce
+            elif event.key == K_LEFT and vardefeat == 0 and menu_victory == 0: #Flèche de gauce
                 move("left")
-            elif event.key == K_RIGHT and vardefeat == 0: #Flèche de droite
+            elif event.key == K_RIGHT and vardefeat == 0 and menu_victory == 0: #Flèche de droite
                 move("right")
             elif event.key == K_RETURN and vardefeat == 1:  # En cas de défaite et d'appui sur entrer
                 for i in range(5):  # On réinitialise le tableau
