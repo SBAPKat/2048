@@ -47,8 +47,8 @@ def exceptonormal():
 def move(deway):
     """fonction qui gere le deplacement, deway est la variable contenant le sens voulu,
     les variables x et y sont respectivementles lignes et les colones du tableau"""
-    global number_case  # Pour pouvoir modifier globalement number_case on doit la définir 
-    # en temps que variable gobale 
+    global number_case  # Pour pouvoir modifier globalement number_case on doit la définir
+    # en temps que variable gobale
     if deway == "down" or deway == "right":
         borninf = 3  # Valeur utilisée dans les boucles for qui suivent
         bornsup = -1  # Elle varie en fonction de la manière dont on veut parcourir
@@ -114,7 +114,7 @@ def images_load():
             key = filename[:-4]
             # On stocke l'image donnée dans le dictionnaire
             image_dict_temp[key] = pygame.image.load(path).convert_alpha()
-    return image_dict_temp 
+    return image_dict_temp
 
 
 def defeat():
@@ -130,7 +130,7 @@ def random_case():
     dans TAB à une position aléatoire"""
     number = randr(0, 4)
     # Choisit un nombre au hasard afin de déterminer si un 2 ou un 4 apparait
-    global number_case # Indique que l'on veut utiliser la variable globale
+    global number_case  # Indique que l'on veut utiliser la variable globale
     global score
     # Choisit les coordonnées dans le tableau au hasard
     number_x, number_y = randr(0, 5), randr(0, 5)
@@ -206,7 +206,7 @@ font = pygame.font.Font('comic.ttf', 40)  # On définit la police et la taille
 score = 0  # On initialise le score
 pygame.mixer.music.set_volume(volume)  # On définit le volume de base
 varvic = 0  # Initialisation pour le premier run de display()
-vardefeat = 0 #On initialise la variable de défaite
+vardefeat = 0  # On initialise la variable de défaite
 background = "background"
 number_case = 0  # Ainsi que le compteur de case
 cons = [0] * 5  # Création du tableau contenant les cases
@@ -215,31 +215,31 @@ for i in range(5):
     tab[i] = list(cons)
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50, 50"
 window = pygame.display.set_mode((ResX, ResY))
-running = 1 # Initialisation de la variable de la permettant d'entrer boucle principale
+running = 1  # Initialisation de la variable de la permettant d'entrer boucle principale
 image_dict = images_load()  # Fonction qui charge toutes les images
 # elle est utilisée dans la fonction display
 varvic = display()
-menu_victory = 0 # Indique si on est sur le menu de la victoire
+menu_victory = 0  # Indique si on est sur le menu de la victoire
 while running:  # Boucle while principale
     for event in pygame.event.get():
-        if event.type == MOUSEBUTTONDOWN: # si l'event est un bouton de la souris
+        if event.type == MOUSEBUTTONDOWN:  # si l'event est un bouton de la souris
             if event.button == 4 and volume < 1:  # roll up
-                volume += 0.05 # On augmente le volume
+                volume += 0.05  # On augmente le volume
                 pygame.mixer.music.set_volume(volume)
             elif event.button == 5 and volume > 0:  # roll down
-                volume -= 0.05 # On baisse le volume
+                volume -= 0.05  # On baisse le volume
                 pygame.mixer.music.set_volume(volume)
-        if event.type == QUIT: # Appui sur la croix
+        if event.type == QUIT:  # Appui sur la croix
             running = 0
-        elif event.type == KEYDOWN: # Si on détecte une frape de clavier
-            if event.key == K_DOWN and vardefeat == 0 and menu_victory == 0: # Flèche du bas
+        elif event.type == KEYDOWN:  # Si on détecte une frape de clavier
+            if event.key == K_DOWN and vardefeat == 0 and menu_victory == 0:  # Flèche du bas
                 # On demande de tenter de déplacer les cases vers le bas
                 move("down")
-            elif event.key == K_UP and vardefeat == 0 and menu_victory == 0: # Flèche du haut
+            elif event.key == K_UP and vardefeat == 0 and menu_victory == 0:  # Flèche du haut
                 move("up")
-            elif event.key == K_LEFT and vardefeat == 0 and menu_victory == 0: #Flèche de gauce
+            elif event.key == K_LEFT and vardefeat == 0 and menu_victory == 0:  # Flèche de gauce
                 move("left")
-            elif event.key == K_RIGHT and vardefeat == 0 and menu_victory == 0: #Flèche de droite
+            elif event.key == K_RIGHT and vardefeat == 0 and menu_victory == 0:  # Flèche de droite
                 move("right")
             elif event.key == K_RETURN and vardefeat == 1:  # En cas de défaite et d'appui sur entrer
                 for i in range(5):  # On réinitialise le tableau
@@ -249,25 +249,24 @@ while running:  # Boucle while principale
                 background = "background"  # et le fond d'ecran au cas ou on aurait attend 2048
                 varvic = 0  # et les variables défaite/win
                 vardefeat = 0
-                varvic = display() # On met a jour l'affichage
+                varvic = display()  # On met a jour l'affichage
             elif event.key == K_RETURN and varvic == 1 and menu_victory == 1:
-                varvic = display() # On met a jour l'affichage
-                menu_victory = 0 # Nous ne somme plus sur le menu de victoire
+                varvic = display()  # On met a jour l'affichage
+                menu_victory = 0  # Nous ne somme plus sur le menu de victoire
         elif event.type == KEYUP:
             # Si la touche pressée est utilisée par le programme, sauf Entrée, ou ce n'est pris que si on perd, ou si on gagne
-            if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN :
+            if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN:
                 vardefeat = defeat()  # On vérifie si c'est la défaite
                 if vardefeat == 1:  # Si défaite
                     # Affiche le menu de défaite
                     window.blit(image_dict.get("defaite"), (0, 0))
-                    pygame.display.flip() # Rafraîchit l'écran
-                elif menu_victory == 0: # on vérifie que l'on a pas appuyer sur entrée
+                    pygame.display.flip()  # Rafraîchit l'écran
+                elif menu_victory == 0:  # on vérifie que l'on a pas appuyer sur entrée
                     # Car sinon cela gnénére une case après le menu de victoire
                     random_case()  # Crée une case aléatoire
                     varvic = display()
-                if varvic == 1 and background != "background_win": # Si victoire et que le fond n'a pas été changé
+                if varvic == 1 and background != "background_win":  # Si victoire et que le fond n'a pas été changé
                     # Affiche le menu de victoire
                     window.blit(image_dict.get("victoire"), (0, 0))
-                    pygame.display.flip() # Rafraîchit l'écran
-                    menu_victory = 1 # Nous somme donc sur le menu de la victoire
-                    
+                    pygame.display.flip()  # Rafraîchit l'écran
+                    menu_victory = 1  # Nous somme donc sur le menu de la victoire
