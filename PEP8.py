@@ -187,9 +187,9 @@ def display():
     return victoire
 
 
-def coords(y, x):
+def coords(x, y):
     """Associe les coordonnées dans le plan à partir des coordonnées du tableau"""
-    return (461+71*x, 181+71*y)  # 461 et 181 sont les coordonnées de la première case, le delta entre les coordonnées
+    return (461+71*y, 181+71*x)  # 461 et 181 sont les coordonnées de la première case, le delta entre les coordonnées
     # pour la case suivante est de 71, on ajoute donc x et y fois 71 afin d'avoir les coordonnées de la case souhaitée
 
 
