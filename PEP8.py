@@ -6,6 +6,7 @@ import traceback
 from PIL import Image, ImageDraw, ImageFont
 from random import randrange as randr
 from pygame.locals import *
+import time
 
 pygame.init()
 
@@ -178,7 +179,7 @@ def display():
                     image_dict = images_load()  # on met a jour le dictionnaire
                     # Affiche la case nouvellement crée
                     window.blit(image_dict.get(key), dispcoord)
-            if tab[x][y] >= 2048:  # Si on détecte un 2048 ou plus
+            if tab[x][y] >= 8:  # Si on détecte un 2048 ou plus
                 victoire = 1
     text_score = font.render(str(score), True, (0, 0, 0))
     window.blit(text_score, (762, 77))  # On affiche le score
@@ -218,6 +219,7 @@ running = 1 # Initialisation de la variable de la permettant d'entrer boucle pri
 image_dict = images_load()  # Fonction qui charge toutes les images
 # elle est utilisée dans la fonction display
 varvic = display()
+menu_victory = 0 # Indique si on est sur le menu de la victoire
 while running:  # Boucle while principale
     for event in pygame.event.get():
         if event.type == MOUSEBUTTONDOWN: # si l'event est un bouton de la souris
@@ -243,23 +245,29 @@ while running:  # Boucle while principale
                 for i in range(5):  # On réinitialise le tableau
                     tab[i] = list(cons)
                     score = 0  # Et le score
-                    number_case = 0  # et le nombre de case
-                    background = "background"  # et le fond d'ecran au cas ou on aurait attend 2048
-                    varvic = 0  # et les variables défaite/win
-                    vardefeat = 0
-                    display() # On met a jour l'affichage
+                number_case = 0  # et le nombre de case
+                background = "background"  # et le fond d'ecran au cas ou on aurait attend 2048
+                varvic = 0  # et les variables défaite/win
+                vardefeat = 0
+                varvic = display() # On met a jour l'affichage
+            elif event.key == K_RETURN and varvic == 1 and menu_victory == 1:
+                varvic = display() # On met a jour l'affichage
+                menu_victory = 0 # Nous ne somme plus sur le menu de victoire
         elif event.type == KEYUP:
             # Si la touche pressée est utilisée par le programme, sauf Entrée, ou ce n'est pris que si on perd, ou si on gagne
-            if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN or event.key == K_RETURN and (vardefeat == 1 or (varvic == 1 and vardefeat == 1)or varvic == 1 and background == "background"):
+            if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN :
                 vardefeat = defeat()  # On vérifie si c'est la défaite
                 if vardefeat == 1:  # Si défaite
                     # Affiche le menu de défaite
                     window.blit(image_dict.get("defaite"), (0, 0))
                     pygame.display.flip() # Rafraîchit l'écran
-                elif vardefeat == 0:  # Sinon
+                elif menu_victory == 0: # on vérifie que l'on a pas appuyer sur entrée
+                    # Car sinon cela gnénére une case après le menu de victoire
                     random_case()  # Crée une case aléatoire
                     varvic = display()
                 if varvic == 1 and background != "background_win": # Si victoire et que le fond n'a pas été changé
                     # Affiche le menu de victoire
                     window.blit(image_dict.get("victoire"), (0, 0))
                     pygame.display.flip() # Rafraîchit l'écran
+                    menu_victory = 1 # Nous somme donc sur le menu de la victoire
+                    
