@@ -113,7 +113,7 @@ def images_load():
             key = filename[:-4]
             # On stocke l'image donnée dans le dictionnaire
             image_dict_temp[key] = pygame.image.load(path).convert_alpha()
-    return image_dict_temp
+    return image_dict_temp 
 
 
 def defeat():
@@ -125,10 +125,11 @@ def defeat():
 
 
 def random_case():
-    """Place une case (2 ou 4 au hasard avec 2 ayant une probabilité de 0.75 et 4 de 0.25) dans TAB à une position aléatoire"""
+    """Place une case (2 ou 4 au hasard avec 2 ayant une probabilité de 0.75 et 4 de 0.25)
+    dans TAB à une position aléatoire"""
     number = randr(0, 4)
     # Choisit un nombre au hasard afin de déterminer si un 2 ou un 4 apparait
-    global number_case
+    global number_case # Indique que l'on veut utiliser la variable globale
     global score
     # Choisit les coordonnées dans le tableau au hasard
     number_x, number_y = randr(0, 5), randr(0, 5)
@@ -146,7 +147,7 @@ def random_case():
         return
     # Entre la valeur déterminée au hasard dans une case vide
     tab[number_x][number_y] = number
-    return  # Condition pour running = Ne pas perdre
+    return
 
 
 def display():
@@ -204,7 +205,7 @@ font = pygame.font.Font('comic.ttf', 40)  # On définit la police et la taille
 score = 0  # On initialise le score
 pygame.mixer.music.set_volume(volume)  # On définit le volume de base
 varvic = 0  # Initialisation pour le premier run de display()
-vardefeat = 0
+vardefeat = 0 #On initialise la variable de défaite
 background = "background"
 number_case = 0  # Ainsi que le compteur de case
 cons = [0] * 5  # Création du tableau contenant les cases
@@ -213,53 +214,52 @@ for i in range(5):
     tab[i] = list(cons)
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50, 50"
 window = pygame.display.set_mode((ResX, ResY))
-running = 1
-pygame.key.set_repeat(400, 30)
+running = 1 # Initialisation de la variable de la permettant d'entrer boucle principale
 image_dict = images_load()  # Fonction qui charge toutes les images
-# elle est utilisée dans la fonction random_case
+# elle est utilisée dans la fonction display
 varvic = display()
 while running:  # Boucle while principale
     for event in pygame.event.get():
-        if event.type == MOUSEBUTTONDOWN:
+        if event.type == MOUSEBUTTONDOWN: # si l'event est un bouton de la souris
             if event.button == 4 and volume < 1:  # roll up
-                volume += 0.05
+                volume += 0.05 # On augmente le volume
                 pygame.mixer.music.set_volume(volume)
             elif event.button == 5 and volume > 0:  # roll down
-                volume -= 0.05
+                volume -= 0.05 # On baisse le volume
                 pygame.mixer.music.set_volume(volume)
-        if event.type == QUIT:
+        if event.type == QUIT: # Appui sur la croix
             running = 0
-        elif event.type == KEYDOWN:
-            if event.key == K_DOWN and vardefeat == 0:
+        elif event.type == KEYDOWN: # Si on détecte une frape de clavier
+            if event.key == K_DOWN and vardefeat == 0: # Flèche du bas
                 # On demande de tenter de déplacer les cases vers le bas
                 move("down")
-            elif event.key == K_UP and vardefeat == 0:
+            elif event.key == K_UP and vardefeat == 0: # Flèche du haut
                 move("up")
-            elif event.key == K_LEFT and vardefeat == 0:
+            elif event.key == K_LEFT and vardefeat == 0: #Flèche de gauce
                 move("left")
-            elif event.key == K_RIGHT and vardefeat == 0:
+            elif event.key == K_RIGHT and vardefeat == 0: #Flèche de droite
                 move("right")
             elif event.key == K_RETURN and vardefeat == 1:  # En cas de défaite et d'appui sur entrer
-                for i in range(5):  # In réinitialise le tableau
+                for i in range(5):  # On réinitialise le tableau
                     tab[i] = list(cons)
-                    score = 0  # et le score
+                    score = 0  # Et le score
                     number_case = 0  # et le nombre de case
-                    background = "background"  # et le fond d'ecran
+                    background = "background"  # et le fond d'ecran au cas ou on aurait attend 2048
                     varvic = 0  # et les variables défaite/win
                     vardefeat = 0
-                    display()
+                    display() # On met a jour l'affichage
         elif event.type == KEYUP:
             # Si la touche pressée est utilisée par le programme, sauf Entrée, ou ce n'est pris que si on perd, ou si on gagne
             if event.key == K_LEFT or event.key == K_RIGHT or event.key == K_UP or event.key == K_DOWN or event.key == K_RETURN and (vardefeat == 1 or (varvic == 1 and vardefeat == 1)or varvic == 1 and background == "background"):
-                vardefeat = defeat()  # On vérifie la victoire ou défaite
+                vardefeat = defeat()  # On vérifie si c'est la défaite
                 if vardefeat == 1:  # Si défaite
                     # Affiche le menu de défaite
                     window.blit(image_dict.get("defaite"), (0, 0))
-                    pygame.display.flip()
+                    pygame.display.flip() # Rafraîchit l'écran
                 elif vardefeat == 0:  # Sinon
                     random_case()  # Crée une case aléatoire
                     varvic = display()
-                if varvic == 1 and background != "background_win":
+                if varvic == 1 and background != "background_win": # Si victoire et que le fond n'a pas été changé
                     # Affiche le menu de victoire
                     window.blit(image_dict.get("victoire"), (0, 0))
-                    pygame.display.flip()
+                    pygame.display.flip() # Rafraîchit l'écran
