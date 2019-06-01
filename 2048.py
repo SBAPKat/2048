@@ -5,7 +5,6 @@ import traceback
 from PIL import Image, ImageDraw, ImageFont
 from random import randrange as randr
 from pygame.locals import *
-import time
 
 pygame.init()
 
