@@ -22,7 +22,7 @@ def imagegen(case_title):
     # de la taille de default, fond transparent
     txt = Image.new('RGBA', default.size, (255, 255, 255, 0))
     # Récupère la police, et le règle sur la taille voulue
-    fnt = ImageFont.truetype('comic.ttf', 20)
+    fnt = ImageFont.truetype(os.path.join('font', 'comic.ttf'), 20)
     d = ImageDraw.Draw(txt)  # Récupère le contexte de dessin de l'image txt
     # Écrit le numéro de la case sur le contexte de dessin, en gris clair
     d.text((0, 20), case_content, font=fnt, fill=(200, 200, 200, 255))
@@ -199,10 +199,10 @@ ResY = 720  # Résolution écran verticale
 pygame.font.init()  # Initialisation de font
 pygame.mixer.init()  # Initialisation de mixer
 # Chargement du fichier mp3 'background'
-pygame.mixer.music.load("background.mp3")
+pygame.mixer.music.load(os.path.join('music', 'background.mp3'))
 # -1 est le nombre de répétitions (ici infini), et 0 correspond au début de la musique
 pygame.mixer.music.play(-1, 0)
-font = pygame.font.Font('comic.ttf', 40)  # On définit la police et la taille
+font = pygame.font.Font(os.path.join('font', 'comic.ttf'), 40)  # On définit la police et la taille
 score = 0  # On initialise le score
 pygame.mixer.music.set_volume(volume)  # On définit le volume de base
 varvic = 0  # Initialisation pour le premier run de display()
