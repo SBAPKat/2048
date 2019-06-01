@@ -158,6 +158,7 @@ def display():
     global varvic  # afin qu'on puisse les modidier
     global background  # de manière globale et non de manière locale
     global image_dict
+    global volume
     if varvic == 1:  # Si on a gagné, change le fond d'écran
         background = "background_win"
     # Affiche la grille de jeu avec le bon fond d'écran
@@ -183,6 +184,12 @@ def display():
                 victoire = 1
     text_score = font.render(str(score), True, (0, 0, 0))
     window.blit(text_score, (762, 77))  # On affiche le score
+    if volume < 0:
+        window.blit(image_dict.get('vol_x'), (20, 20))
+    elif volume <= 0.5:
+        window.blit(image_dict.get('vol_down'), (20, 20))
+    else:
+        window.blit(image_dict.get('vol_up'), (20, 20))
     pygame.display.flip()  # Rafraichit l'écran
     return victoire
 
@@ -225,9 +232,11 @@ while running:  # Boucle while principale
         if event.type == MOUSEBUTTONDOWN:  # si l'event est un bouton de la souris
             if event.button == 4 and volume < 1:  # roll up
                 volume += 0.05  # On augmente le volume
+                display()
                 pygame.mixer.music.set_volume(volume)
             elif event.button == 5 and volume > 0:  # roll down
                 volume -= 0.05  # On baisse le volume
+                display()
                 pygame.mixer.music.set_volume(volume)
         if event.type == QUIT:  # Appui sur la croix
             running = 0
