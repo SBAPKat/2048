@@ -1,10 +1,10 @@
 # encoding=utf-8
 import pygame
 import os
-import traceback
 from PIL import Image, ImageDraw, ImageFont
 from random import randrange as randr
 from pygame.locals import *
+
 
 pygame.init()
 
@@ -14,12 +14,12 @@ def imagegen(case_title):
     for character in case_title:
         if character not in 'case':
             case_content = case_content + character
-    # ouvre image "default"
+    # Ouvre image "default"
     default = Image.open(os.path.join('pictures', 'default.png'))
-    # créée une image vide avec channels rouge bleu vert et transparence,
+    # Créée une image vide avec channels rouge bleu vert et transparence,
     # de la taille de default, fond transparent
     txt = Image.new('RGBA', default.size, (255, 255, 255, 0))
-    # Récupère la police, et le règle sur la taille voulue
+    # Récupère la police, et la règle sur la taille voulue
     fnt = ImageFont.truetype(os.path.join('font', 'comic.ttf'), 20)
     d = ImageDraw.Draw(txt)  # Récupère le contexte de dessin de l'image txt
     # Écrit le numéro de la case sur le contexte de dessin, en gris clair
@@ -43,13 +43,13 @@ def exceptonormal():
 
 
 def move(deway):
-    """fonction qui gere le deplacement, deway est la variable contenant le sens voulu,
-    les variables x et y sont respectivementles lignes et les colones du tableau"""
+    """fonction qui gère le déplacement, deway est la variable contenant le sens voulu,
+    les variables x et y sont respectivement les lignes et les colones du tableau"""
     global number_case  # Pour pouvoir modifier globalement number_case on doit la définir
     # en temps que variable gobale
     if deway == "down" or deway == "right":
-        borninf = 3  # Valeur utilisée dans les boucles for qui suivent
-        bornsup = -1  # Elle varie en fonction de la manière dont on veut parcourir
+        borninf = 3  # Valeurs utilisées dans les boucles for qui suivent
+        bornsup = -1  # Elles varient en fonction de la manière dont on veut parcourir
         # le tableau
         step = -1
         # Varie en fonction du sens de lecture : tab[x][y] est la case déplacée
@@ -63,19 +63,19 @@ def move(deway):
     if deway == "down" or deway == "up":
         # Pour qu'une case parcourt tout le tableau, elle doit se déplacer de 4 cases
         for passage in range(4):
-            # Minimum, maximum, pas, on lit le  tableau  ligne par ligne
+            # Minimum, maximum, pas, on lit le  tableau ligne par ligne
             for x in range(borninf, bornsup, step):
                 for y in range(5):
                     # Si la case adjacente et la case
                     # à déplacer sont identiques et qu'elles n'ont pas deja été fusionées (nombre impair)
                     if tab[x + direction][y] == tab[x][y] and tab[x][y] % 2 == 0 and tab[x][y] != 0:
                         tab[x + direction][y] = 2 * tab[x][y] + 1
-                        # on fait fois deux pour combiner les cases, puis on rajoute 1 afin de ne pas
+                        # On fait x2 pour combiner les cases, puis on rajoute 1 afin de ne pas
                         # fusionner deux fois une case lors d'un passage
-                        # L'ancienne position de la case est donc = à 0
+                        # L'ancienne position de la case est donc égale à 0
                         tab[x][y] = 0
                         number_case -= 1  # Deux cases ont fusioné, on retire une case du compteur
-                    # la case adjacente est vide et la case à déplacer ne l'est pas
+                    # Si la case adjacente est vide et la case à déplacer ne l'est pas
                     if tab[x + direction][y] == 0 and tab[x][y] != 0:
                         # On place donc la case à déplacer à la place de la case adjacente
                         tab[x + direction][y] = tab[x][y]
@@ -88,7 +88,7 @@ def move(deway):
             for y in range(borninf, bornsup, step):
                 for x in range(5):
                     if tab[x][y + direction] == tab[x][y] and tab[x][y] % 2 == 0 and tab[x][y] != 0:
-                        # On fait fois deux pour combiner les cases
+                        # On fait x2 pour combiner les cases
                         tab[x][y + direction] = 2 * tab[x][y] + 1
                         tab[x][y] = 0
                         number_case -= 1
@@ -100,14 +100,14 @@ def move(deway):
 
 
 def images_load():
-    """Charge les images et les stocke dans un dictionnaire qu'elle renvoie"""
+    """Charge les images et les stocke dans un dictionnaire renvoyé"""
     image_dict_temp = {}  # Dictionnaire vide qui contiendra les images
     # Parcours tous les fichiers du dossier "pictures"
     for filename in os.listdir("pictures"):
         if filename.endswith(".png"):  # Si le fichier est un .png, entre dans la boucle
             # Récupère le chemin d'accès au fichier et le stocke dans path
             path = os.path.join("pictures", filename)
-            # Crée une clé pour accéder à l'élément dans le dictionnaire en prenant le nom du
+            # Créée une clé pour accéder à l'élément dans le dictionnaire en prenant le nom du
             # fichier et en enlevant l'extension (-4 caractères)
             key = filename[:-4]
             # On stocke l'image donnée dans le dictionnaire
@@ -133,7 +133,7 @@ def random_case():
     # Choisit les coordonnées dans le tableau au hasard
     number_x, number_y = randr(0, 5), randr(0, 5)
     if tab[number_x][number_y] == 0:  # Vérifie si la case est vide
-        if number == 0:  # if et else servent ici à déterminer 2 ou 4 à partir de la valeur aléatoire
+        if number == 0:  # If et else servent ici à déterminer 2 ou 4 à partir de la valeur aléatoire
             number = 4
             score = score + 4
             number_case += 1  # On ajoute une case
@@ -168,7 +168,7 @@ def display():
                 # Stocke dans la variable dispcoord l'equivalent en coordonnées dans le plan
                 # à partir des coordonnées dans le tableau
                 dispcoord = coords(x, y)
-                # "Créé le nom de l'objet à afficher
+                # "Créée le nom de l'objet à afficher
                 key = "case" + str(tab[x][y])
                 if key in image_dict:  # si la case existe
                     # Affiche l'objet
@@ -176,7 +176,7 @@ def display():
                 else:
                     imagegen(key)  # On génère une image
                     image_dict = images_load()  # on met a jour le dictionnaire
-                    # Affiche la case nouvellement crée
+                    # Affiche la case nouvellement créée
                     window.blit(image_dict.get(key), dispcoord)
             if tab[x][y] >= 8:  # Si on détecte un 2048 ou plus
                 victoire = 1
@@ -219,7 +219,7 @@ tab = [0] * 5
 for i in range(5):
     tab[i] = list(cons)
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50, 50"
-window = pygame.display.set_mode((ResX, ResY))
+window = pygame.display.set_mode((ResX, ResY))o
 running = 1  # Initialisation de la variable de la permettant d'entrer boucle principale
 image_dict = images_load()  # Fonction qui charge toutes les images
 # elle est utilisée dans la fonction display
