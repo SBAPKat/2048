@@ -5,7 +5,6 @@ from PIL import Image, ImageDraw, ImageFont
 from random import randrange as randr
 from pygame.locals import *
 
-
 pygame.init()
 
 
@@ -19,7 +18,7 @@ def imagegen(case_title):
     # Créée une image vide avec channels rouge bleu vert et transparence,
     # de la taille de default, fond transparent
     txt = Image.new('RGBA', default.size, (255, 255, 255, 0))
-    # Récupère la police, et la règle sur la taille voulue
+    # Récupère la police, et le règle sur la taille voulue
     fnt = ImageFont.truetype(os.path.join('font', 'comic.ttf'), 20)
     d = ImageDraw.Draw(txt)  # Récupère le contexte de dessin de l'image txt
     # Écrit le numéro de la case sur le contexte de dessin, en gris clair
@@ -43,18 +42,18 @@ def exceptonormal():
 
 
 def move(deway):
-    """fonction qui gère le déplacement, deway est la variable contenant le sens voulu,
-    les variables x et y sont respectivement les lignes et les colones du tableau"""
+    """fonction qui gere le deplacement, deway est la variable contenant le sens voulu,
+    les variables x et y sont respectivementles lignes et les colones du tableau"""
     global number_case  # Pour pouvoir modifier globalement number_case on doit la définir
     # en temps que variable gobale
     if deway == "down" or deway == "right":
-        borninf = 3  # Valeurs utilisées dans les boucles for qui suivent
-        bornsup = -1  # Elles varient en fonction de la manière dont on veut parcourir
+        borninf = 3  # Valeur utilisée dans les boucles for qui suivent
+        bornsup = -1  # Elle varie en fonction de la manière dont on veut parcourir
         # le tableau
         step = -1
         # Varie en fonction du sens de lecture : tab[x][y] est la case déplacée
         direction = 1
-        # tab[x+direction][y] ou  tab[x][y+direction] est la case sur laquelle tab[x][y] va se déplacer.
+        # tab[x+direction][y] ou tab[x][y+direction] est la case sur laquelle tab[x][y] va se déplacer.
     else:
         borninf = 1
         bornsup = 5
@@ -63,7 +62,7 @@ def move(deway):
     if deway == "down" or deway == "up":
         # Pour qu'une case parcourt tout le tableau, elle doit se déplacer de 4 cases
         for passage in range(4):
-            # Minimum, maximum, pas, on lit le  tableau ligne par ligne
+            # Minimum, maximum, pas, on lit le  tableau  ligne par ligne
             for x in range(borninf, bornsup, step):
                 for y in range(5):
                     # Si la case adjacente et la case
@@ -79,7 +78,7 @@ def move(deway):
                     if tab[x + direction][y] == 0 and tab[x][y] != 0:
                         # On place donc la case à déplacer à la place de la case adjacente
                         tab[x + direction][y] = tab[x][y]
-                        tab[x][y] = 0  # L'ancienne posotion vaut donc 0
+                        tab[x][y] = 0  # L'ancienne position vaut donc 0
         exceptonormal()  # On retire les 1 ajoutés précedemment
         return
     else:
@@ -219,7 +218,7 @@ tab = [0] * 5
 for i in range(5):
     tab[i] = list(cons)
 os.environ['SDL_VIDEO_WINDOW_POS'] = "50, 50"
-window = pygame.display.set_mode((ResX, ResY))o
+window = pygame.display.set_mode((ResX, ResY))
 running = 1  # Initialisation de la variable de la permettant d'entrer boucle principale
 image_dict = images_load()  # Fonction qui charge toutes les images
 # elle est utilisée dans la fonction display
@@ -251,7 +250,7 @@ while running:  # Boucle while principale
             elif event.key == K_RETURN and vardefeat == 1:  # En cas de défaite et d'appui sur entrer
                 for i in range(5):  # On réinitialise le tableau
                     tab[i] = list(cons)
-                    score = 0  # Et le score
+                    score = 0  # et le score
                 number_case = 0  # et le nombre de case
                 background = "background"  # et le fond d'ecran au cas ou on aurait attend 2048
                 varvic = 0  # et les variables défaite/win
