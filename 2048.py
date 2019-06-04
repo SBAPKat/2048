@@ -5,7 +5,6 @@ from PIL import Image, ImageDraw, ImageFont
 from random import randrange as randr
 from pygame.locals import *
 
-pygame.init()
 
 
 def imagegen(case_title):
@@ -177,7 +176,7 @@ def display():
                     image_dict = images_load()  # on met a jour le dictionnaire
                     # Affiche la case nouvellement créée
                     window.blit(image_dict.get(key), dispcoord)
-            if tab[x][y] >= 8:  # Si on détecte un 2048 ou plus
+            if tab[x][y] >= 2048:  # Si on détecte un 2048 ou plus
                 victoire = 1
     text_score = font.render(str(score), True, (0, 0, 0))
     window.blit(text_score, (762, 77))  # On affiche le score
